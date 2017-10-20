@@ -1,6 +1,6 @@
 ''' Martinez EC Estimate Model
     so, sb, beta, npow1, adel, c
-    modified from Eli's scripts 2001
+    modified from CALSIM-DSM2 preprocess scripts 2001
     by Nicky Sandhu, Yu Zhou 2014/11
 '''
 # model requirement: dsm2-vista
@@ -16,9 +16,9 @@ import ec_boundary, conserve
 from vmath import godin
 from vista.set import DataReference
 # import interpolate   # daily only
-from vtimeseries import timewindow,timeinterval,interpolate  # for monthly add
+from vtimeseries import timewindow,timeinterval#,interpolate  # for monthly add
 from planning_time_window import grow_window
-from vdss import opendss,findpath,writedss,writeascii
+from vdss import opendss,findpath,writedss
 from vista.time import TimeFactory
 
 def planning_ec_mtz(so,sb,beta,npow1,npow2,adel,c,outputfile,outputpath,twstr): # MTZ = RSAC054 BC for the qual
@@ -30,12 +30,12 @@ def planning_ec_mtz(so,sb,beta,npow1,npow2,adel,c,outputfile,outputpath,twstr): 
     
     st=timewindow(twstr).startTime
     et=timewindow(twstr).endTime
-    gap_year = et.date.year-st.date.year
+    span_year = et.date.year-st.date.year
     
-    if gap_year>60:
+    if span_year>60:
       blocks=[]
       st_i=st
-      for i in range(0,gap_year/60):
+      for i in range(0,span_year/60):
         et_i = st_i+timeinterval('60year')
         blocks.append(TimeFactory.getInstance().createTimeWindow(st_i,et_i).__str__())
         st_i=et_i
@@ -52,12 +52,7 @@ def planning_ec_mtz(so,sb,beta,npow1,npow2,adel,c,outputfile,outputpath,twstr): 
                                                     # so that after prelimiary operations (e.g. time average)
                                                     # time series will still span at least TWIND
       ndo=DataReference.create(findpath(ndofile,ndopath)[0],TWIND).getData()
-      
-      # conserveSpline will attempt to preserve flow positivity, but we know that
-      # in deep dark historical times NDO was negative, so we are going to add
-      # an arbitrary amount, interpolate the time series, and subtract the same amount
-      # back. The operation is still conservative
-      ndo15=conserve.conserveSpline(ndo+14000.,"15MIN") - 14000.
+      ndo15=conserve.conserveSpline(ndo,"15MIN")
       mtzastro=DataReference.create(findpath(astrofile,astropath)[0],TWINDBUF).getData()
       
       astrorms=godin((mtzastro*mtzastro)**0.5)           # RMS energy of tide (used to predict filling and draining)
@@ -82,8 +77,8 @@ def read_input_params(file):
 
     
 if __name__ == "__main__":
-    DEBUG=True
-    suffix = 'so37196'  # calibrated from 91/1-93/10 astr stage & dicu
+    DEBUG=False
+    suffix = 'so37196'  # calibrated from 91/1-93/9 astr stage & dicu, hist EC
     
     #Read param from input
     so,sb,beta,npow1,adel,c0,c1,c2,c3,c4,c5,c6,c7=read_input_params("param_"+suffix+".dat")

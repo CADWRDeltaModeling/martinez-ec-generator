@@ -23,8 +23,6 @@ def gCalc(ndo,beta,g0=None):
         raise "NDO time step must be 15MIN or 1HOUR."
     dt=1
     nstep=ndo.size()
-    g=zeros(nstep,'d')
-    
     if ti.toString() == "15MIN":
         dt=0.25
     g=zeros(nstep,'d')
@@ -122,7 +120,7 @@ def ECEst(stage, ndo, so, sb, beta, npow1, npow2,g0, zrms, c):
     ztw=timewindow(newstart.toString()+' - '+newend.toString())
     z=stage.createSlice(ztw)
     g=gCalc(ndo,beta,g0)
-    # writedss("planning_ec_input.dss","/CALC/RSAC054/G//15MIN/CALC",g) # for debug
+    # writedss("mtz_ec_output.dss","/CALC/RSAC054/G//15MIN/CALC",g) # for debug
     zarr=z.getYArray()
     giter=g.getIterator()
     ec=zeros(g.size(),'d')

@@ -2,11 +2,17 @@
 import interpolator.ConservativeSpline
 from vista.set import Constants,RegularTimeSeries
 from vista.time import TimeInterval,Time
-from vtimeseries import time,timeinterval
+from vdisplay import tabulate
+from vtimeseries import time,timeinterval,tsmin,tsmax
 
 splineparam=20
 
 def conserveSpline(avedata, interval):
+    max_val = tsmax(avedata)
+    min_val = tsmin(avedata)
+    range = 0.1*(max_val - min_val)
+    # transform to min value of 10000
+    avedata = avedata - min_val + range;
     if not isinstance(interval,TimeInterval):
         interval=timeinterval(interval)
     start=avedata.getStartTime()
@@ -28,8 +34,8 @@ def conserveSpline(avedata, interval):
         x[i+1]=el.getX()
         y[i]=el.getY()
         i=i+1
-        #if not Constants.DEFAULT_FLAG_FILTER.isAcceptable(el):
-        #    raise "Missing or bad data not allowed in conservative spline"
+        if not Constants.DEFAULT_FLAG_FILTER.isAcceptable(el):
+            raise "Missing or bad data not allowed in conservative spline"
     p=map(lambda x: splineparam, y)
     spline=interpolator.ConservativeSpline(x,y,p,y[0],y[n-1])
     ynew=zeros(nout,'d')
@@ -38,14 +44,13 @@ def conserveSpline(avedata, interval):
     while not dsi.atEnd():
         el=dsi.getElement()
         if spline.rh2val(el.getX()) < 0:
-            # print spline.rh2val(el.getX())
-            useY=0. #y[el.getX()]    # temporary to prevent negative
-            useY=spline.rh2val(el.getX())
+            useY=y(el.getX())
         else:
             useY=spline.rh2val(el.getX())
         #
         el.setY(useY)
         dsi.putElement(el)
         dsi.advance()
-
+    # transform reversed... see the beginning of the function
+    newseries = newseries + min_val - range;
     return newseries
