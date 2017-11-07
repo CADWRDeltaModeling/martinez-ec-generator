@@ -1,0 +1,10 @@
+universe = vanilla
+# should_transfer_files   = YES
+# when_to_transfer_output = ON_EXIT
+requirements = TARGET.machine == "BDOMO-038.ad.water.ca.gov" # could be changed
+transfer_input_files = mtz_ec_calib,vista
+transfer_output_files = mtz_ec_calib
+executable = g_calib.bat
+log = g_calib.log
+output = g_calib.output
+queue
