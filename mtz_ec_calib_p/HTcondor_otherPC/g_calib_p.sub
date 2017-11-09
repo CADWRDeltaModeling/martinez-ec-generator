@@ -1,0 +1,8 @@
+universe = vanilla
+# requirements = TARGET.machine == "BDOMO-032.ad.water.ca.gov"
+transfer_input_files = pest.slave,model
+# transfer_output_files = # no need since master will summarize slaves' info during the process
+executable = g_calib_p.bat
+log = g_calib_p.log
+output = g_calib_p.output
+queue
