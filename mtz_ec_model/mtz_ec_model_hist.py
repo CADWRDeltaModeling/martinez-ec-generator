@@ -22,11 +22,11 @@ from vdss import opendss,findpath,writedss
 from vista.time import TimeFactory
 
 def planning_ec_mtz(so,sb,beta,npow1,npow2,adel,c,outputfile,outputpath,twstr): # MTZ = RSAC054 BC for the qual
-    ndofile = opendss("mtz_ec_input.dss")
-    ndopath = "/CALSIM/NDO/FLOW-NDO//1MON/2005A01A/"                   # planning study from Calsim
+    ndofile = opendss("mtz_ec_input_hist.dss")
+    ndopath = "/DELTA/NDO/FLOW//1DAY/BDO/"                             # hist study 90-15
     
     astrofile=ndofile
-    astropath="/FILL\+CHAN/RSAC054/STAGE//15MIN/ASTRO-PLANNING-2/"     # astr plan ngvd
+    astropath="/DELTA/RSAC054/STAGE//15MIN/DWR-DMS-ASTRO/"             # astr plan ngvd
     
     st=timewindow(twstr).startTime
     et=timewindow(twstr).endTime
@@ -91,9 +91,9 @@ if __name__ == "__main__":
       print so,sb,beta,npow1,adel, c0, c1, c2, c3, c4, c5, c6, c7
     
     #Run model with input param
-    outputfile="mtz_ec_output.dss"
+    outputfile="mtz_ec_output_hist.dss"
     outputpath="/FILL+CHAN/RSAC054/EC//15MIN/PLAN/"
-    twstr="01OCT1921 0000 - 01OCT2003 0000"
+    twstr="01OCT1990 0000 - 01OCT2014 0000"
     
     planning_ec_mtz(so,sb,beta,npow1,npow2,adel,c,outputfile,outputpath,twstr)    
     

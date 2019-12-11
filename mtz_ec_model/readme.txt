@@ -8,7 +8,7 @@ path and files
 dsm2-vista is required; version along with DSM2 v812, git commit 996783b2275e5281683de3027ed2789d60fd4a81; its bin (vscript) set up in environment variables
 mtz_ec_model.bat to run the python script
 Python scripts mtz_ec_model.py, ec_boundary.py, conserve.py, config.py, planning_time_window.py
-parameters: param_so37196.dat
+parameters: param_so36655.dat (recalibrated with DCD)
 *********************************************
 input: (could be modified in mtz_ec_model.py)
 *NDO (Net Delta Outflow)

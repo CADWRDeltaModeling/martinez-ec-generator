@@ -23,7 +23,9 @@ from vista.time import TimeFactory
 
 def planning_ec_mtz(so,sb,beta,npow1,npow2,adel,c,outputfile,outputpath,twstr): # MTZ = RSAC054 BC for the qual
     ndofile = opendss("mtz_ec_input.dss")
-    ndopath = "/DELTA/NDO/FLOW//1DAY/BDO/"                    # DICU 90-14
+    # ndopath = "/DELTA/NDO/FLOW//1DAY/BDO/"                    # DICU 90-14
+    ndopath = "/DELTA/NDO_DCD/FLOW//1DAY/DWR-DMS-201707/"     # DCD 90-17
+    # ndopath = "/DELTA/NDO_SCD/FLOW//1DAY/DWR-DMS-201707/"     # SCD 90-17
 
     astrofile=ndofile
     astropath="/DELTA/RSAC054/STAGE//15MIN/DWR-DMS-ASTRO/"          # astr plan 1967-2019
